@@ -256,7 +256,6 @@ int proc_create_thread(struct thread *td, uint8_t *kbase, struct proc *p, uint64
     printf("entries->start: %p, entries->offset %p, num_entries %d\n", entries->start, entries->offset, num_entries);
 
     // offsets are for 9.00 libraries
-
     uint64_t _scePthreadAttrInit = 0, _scePthreadAttrSetstacksize = 0, _scePthreadCreate = 0, _thr_initial = 0;
     for (int i = 0; i < num_entries; i++) {
         if (entries[i].prot != (PROT_READ | PROT_EXEC)) {
