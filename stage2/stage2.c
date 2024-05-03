@@ -7,6 +7,7 @@
 
 // clang-format off
 #include "proc_utils.h"
+#include <string.h>
 
 extern uint8_t payloadbin[];
 extern int32_t payloadbin_size;
@@ -300,12 +301,13 @@ int shellcore_fpkg_patch(struct thread * td, uint8_t * kbase) {
   ret = proc_write_mem(td, kbase, ssc, (void * )(text_seg_base + ext_hdd_patch), 1, "\xEB", & n);
   if (ret)
     goto error;
-
+#if FIRMWARE == 900 // FW 9.00
   // enable debug trophies on retail
   ret = proc_write_mem(td, kbase, ssc, (void * )(text_seg_base + debug_trophies_patch), 5, "\x31\xc0\x90\x90\x90", & n);
   if (ret) {
     goto error;
   }
+#endif
 
   error:
     if (entries)
@@ -399,7 +401,12 @@ void stage2(void) {
   OrbisNotificationRequest notify = {};
   notify.targetId = -1;
   notify.useIconImageUri = 1;
+#if !ENABLE_DEBUG_MENU
   memcpy( & notify.message, "PPPwned: Payload Injected successfully", 40);
+#else
+  memcpy( & notify.message, "PPPwned: Debug Settings enabled", 33);
+#endif
+   int fd;
 
   struct thread * td = curthread;
   void( * vm_map_lock)(struct vm_map * map) = (void * )(kbase + vm_map_lock_offset);
@@ -412,13 +419,27 @@ void stage2(void) {
     (void * )(kbase + vm_map_insert_offset);
   int( * vm_map_unlock)(struct vm_map * map) = (void * )(kbase + vm_map_unlock_offset);
 
-  #if ENABLE_DEBUG_MENU
+#if ENABLE_DEBUG_MENU
   printf("Enabling Debug Menu\n");
   shellui_patch(td, kbase);
   shellcore_fpkg_patch(td, kbase);
   printf("Done.\n");
-  #endif
-  int fd;
+
+   fd = ksys_open(td, "/dev/notification0", O_WRONLY, 0);
+  if (!fd)
+    fd = ksys_open(td, "/dev/notification0", O_WRONLY | O_NONBLOCK, 0);
+  if (!fd)
+    fd = ksys_open(td, "/dev/notification1", O_WRONLY, 0);
+  if (!fd)
+    fd = ksys_open(td, "/dev/notification1", O_WRONLY | O_NONBLOCK, 0);
+
+  if (fd) {
+    ksys_write(td, fd, & notify, sizeof(notify));
+    ksys_close(td, fd);
+  }
+
+return 0;
+#endif
 
   #if USB_LOADER
  void* buffer = NULL;
