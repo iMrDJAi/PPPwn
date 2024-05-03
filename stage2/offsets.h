@@ -7,7 +7,7 @@
 
 #ifndef __OFFSETS_H__
 #define __OFFSETS_H__
-#define ENABLE_DEBUG_MENU 1
+//#define ENABLE_DEBUG_MENU 1
 
 #if FIRMWARE == 900 // FW 9.00
 
@@ -60,6 +60,8 @@
 #define vm_map_delete_offset 0x0007E680
 #define create_thread_offset 0x001ED670
 #define all_proc_offset 0x01B946E0
+#define sys_dynlib_dlsym_p 0x0023B67F
+#define sys_dynlib_dlsym_p2 0x00221B40
 
 /* kernel offsets */
 
