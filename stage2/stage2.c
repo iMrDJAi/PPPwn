@@ -135,9 +135,10 @@ int shellui_patch(struct thread * td, uint8_t * kbase) {
 
   int ret = 0;
 
+
   uint32_t ofs_to_ret_1[] = {
-    0x0001D1C0,
-    0x0001D520,
+    sys_debug_menu,
+    sys_debug_menu_1,
   };
 
   uint8_t mov__eax_1__ret[6] = {
