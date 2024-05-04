@@ -330,6 +330,9 @@ static int sys_kexec(struct thread * td, struct sys_kexec_args * uap) {
 }
 
 void stage2(void) {
+  
+  // Use "kmem" for all patches
+	uint8_t *kmem;
   uint64_t kaslr_offset = rdmsr(MSR_LSTAR) - kdlsym_addr_Xfast_syscall;
   uint8_t * kbase = (uint8_t * )(rdmsr(0xC0000082) - 0x1C0);
   int( * printf)(const char * format, ...) = (void * ) kdlsym(printf);
@@ -366,10 +369,10 @@ void stage2(void) {
   memcpy((void * ) kdlsym(copyinstr_patch2), nops, sizeof(nops));
   *(uint16_t * ) kdlsym(copyinstr_patch3) = 0x9090;
 
+#if !ENABLE_DEBUG_MENU
   printf("Patching vm_map_protect, ptrace, ASLR and kmem_alloc\n");
 
   // patch vm_map_protect check
-
   memcpy((void * )(kbase + vm_map_protect_p), "\x90\x90\x90\x90\x90\x90", 6);
 
   // patch ptrace
@@ -377,7 +380,6 @@ void stage2(void) {
   memcpy((void * )(kbase + ptrace_p2), "\xE9\x7C\x02\x00\x00", 5);
 
   // patch sceSblACMgrIsAllowedSystemLevelDebugging
-
   memcpy((void * )(kbase + sceSblACMgrIsAllowedSystemLevelDebugging_p), "\x48\xC7\xC0\x01\x00\x00\x00\xC3", 8); //900
 
   // patch ASLR, thanks 2much4u
@@ -386,6 +388,70 @@ void stage2(void) {
   // patch kmem_alloc
   *(uint8_t * )(kbase + kemem_1) = VM_PROT_ALL;
   *(uint8_t * )(kbase + kemem_2) = VM_PROT_ALL;
+
+#if FIRMWARE == 1100 // FW 11.00, only neeeded for 11.00
+  kmem = (uint8_t *)&kbase[0x1E4C33];
+  kmem[0] = 0x90;
+  kmem[1] = 0x90;
+  kmem[2] = 0x90;
+  kmem[3] = 0x90;
+  kmem[4] = 0x90;
+  kmem[5] = 0x90;
+ 
+  kmem = (uint8_t *)&kbase[0x1E4C43];
+  kmem[0] = 0x90;
+  kmem[1] = 0x90;
+  kmem[2] = 0x90;
+  kmem[3] = 0x90;
+  kmem[4] = 0x90;
+  kmem[5] = 0x90;
+ 
+  kmem = (uint8_t *)&kbase[0x1E4C63];
+  kmem[0] = 0x90;
+  kmem[1] = 0xE9;
+
+  // Enable MAP_SELF
+	// sceSblACMgrHasMmapSelfCapability
+	kmem = (uint8_t *)&kbase[0x003D0E50];
+	kmem[0] = 0xB8;
+	kmem[1] = 0x01;
+	kmem[2] = 0x00;
+	kmem[3] = 0x00;
+	kmem[4] = 0x00;
+	kmem[5] = 0xC3;
+
+	// sceSblACMgrIsAllowedToMmapSelf
+	kmem = (uint8_t *)&kbase[0x003D0E70];//3D0DE0
+	kmem[0] = 0xB8;
+	kmem[1] = 0x01;
+	kmem[2] = 0x00;
+	kmem[3] = 0x00;
+	kmem[4] = 0x00;
+	kmem[5] = 0xC3;
+
+	// Patches call to sceSblAuthMgrIsLoadable in vm_mmap2
+	kmem = (uint8_t *)&kbase[0x00157F91];
+	kmem[0] = 0x31;
+	kmem[1] = 0xC0;
+	kmem[2] = 0xEB;
+	kmem[3] = 0x01;
+#endif
+#else
+#if FIRMWARE == 1100 // FW 11.00, 9.00 already has goldhen
+	// Patch debug setting errors
+	kmem = (uint8_t *)&kbase[0x004EE328];
+	kmem[0] = 0x00;
+	kmem[1] = 0x00;
+	kmem[2] = 0x00;
+	kmem[3] = 0x00;
+
+	kmem = (uint8_t *)&kbase[0x004EF3EE];
+	kmem[0] = 0x00;
+	kmem[1] = 0x00;
+	kmem[2] = 0x00;
+	kmem[3] = 0x00;
+#endif
+#endif
 
   // Install kexec syscall 11
   struct sysent * sys = & sysents[SYS_kexec];
