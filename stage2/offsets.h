@@ -163,54 +163,56 @@
 
 #if ENABLE_DEBUG_MENU
 // ShellCore offsets
-#define enable_data_mount_patch 0x0031b320 // 1 .
-#define enable_fpkg_patch 0x003d26bf // 1 .
-#define fake_free_patch 0x00fb08d9 // 1 .
-#define pkg_installer_patch 0x009f1600 // 1 .
-#define ext_hdd_patch 0x0060500d // 1 .
+#define enable_data_mount_patch 0x0031b320 // 1
+#define enable_fpkg_patch 0x003d26bf // 1
+#define fake_free_patch 0x00fb08d9 // 1
+#define pkg_installer_patch 0x009f1600 // 1
+#define ext_hdd_patch 0x0060500d // 1
 
-#define sceKernelIsGenuineCEX 0x0016b6a4 // .
-#define sceKernelIsGenuineCEX_1 0x008594c4 // .
-#define sceKernelIsGenuineCEX_2 0x008a8602 // .
-#define sceKernelIsGenuineCEX_3 0x00a080b4 // .
-#define dipsw_libSceDipsw 0x0016b6d2 // .
-#define dipsw_libSceDipsw_1 0x00247e5c // .
-#define dipsw_libSceDipsw_2 0x008594f2 // .
-#define dipsw_libSceDipsw_3 0x00a080e2 // .
+#define sceKernelIsGenuineCEX 0x0016b6a4
+#define sceKernelIsGenuineCEX_1 0x008594c4
+#define sceKernelIsGenuineCEX_2 0x008a8602
+#define sceKernelIsGenuineCEX_3 0x00a080b4
+#define dipsw_libSceDipsw 0x0016b6d2
+#define dipsw_libSceDipsw_1 0x00247e5c
+#define dipsw_libSceDipsw_2 0x008594f2
+#define dipsw_libSceDipsw_3 0x00a080e2
 // debug menu libkernel_sys.prx
-#define sys_debug_menu   0x1ce50 // .
-#define sys_debug_menu_1 0x1d1b0 // .
+#define sys_debug_menu   0x1ce50
+#define sys_debug_menu_1 0x1d1b0
 #endif
 
 // libkernel_sys.srpx 
-#define _scePthreadAttrInit_offset 0x13e20 // .
-#define _scePthreadAttrSetstacksize_offset 0x13e40 // .
-#define _scePthreadCreate_offset 0x14260 // .
-#define _thr_initial_offset 0x8e830 // .
+#define _scePthreadAttrInit_offset 0x13e20
+#define _scePthreadAttrSetstacksize_offset 0x13e40
+#define _scePthreadCreate_offset 0x14260
+#define _thr_initial_offset 0x8e830
 
 //kern
-#define vm_map_protect_p 0x0035C710
-#define ptrace_p 0x00384285
-#define ptrace_p2 0x00384771
-#define disable_aslr_p 0x003B11A4
-#define sceSblACMgrIsAllowedSystemLevelDebugging_p 0x003D0DE0
-#define kemem_2 0x00245EE4
-#define kemem_1 0x00245EDC
+#define vm_map_protect_p 0x39207B
+#define ptrace_p 0x44E625
+#define ptrace_p2 0x44EB11
+#define disable_aslr_p 0x3BF3A4
+#define sceSblACMgrIsAllowedSystemLevelDebugging_p 0x4497F0
+#define kemem_2 0x33B114
+#define kemem_1 0x33B10C
 
-#define vm_map_lock_offset  0x00357760
-#define vm_map_insert_offset 0x00358AB0
-#define vm_map_unlock_offset  0x003577D0
-#define malloc_offset 0x001A4220
-#define free_offset 0x001A43E0
-#define vm_map_lock_read_offset 0x003578B0
-#define vm_map_unlock_read_offset 0x00357900
-#define vm_map_lookup_entry_offset 0x00357EF0
-#define M_TEMP_offset 0x015415B0
-#define proc_rmem_offset  0x003838A0
-#define vm_map_findspace_offset 0x0035A970
-#define vm_map_delete_offset 0x0035A3B0
-#define create_thread_offset 0x00295170
-#define all_proc_offset 0x022D0A98
+#define vm_map_lock_offset 0x38CF20
+#define vm_map_insert_offset 0x38E270
+#define vm_map_unlock_offset 0x38CF90
+#define malloc_offset 0x109A60
+#define free_offset 0x109C20
+#define vm_map_lock_read_offset 0x38D070
+#define vm_map_unlock_read_offset 0x38D0C0
+#define vm_map_lookup_entry_offset 0x38D6B0
+#define M_TEMP_offset 0x1532C00
+#define proc_rmem_offset  0x44DC40
+#define vm_map_findspace_offset 0x390130
+#define vm_map_delete_offset 0x38FB70
+#define create_thread_offset 0x182F0
+#define all_proc_offset 0x22D9B40 // Address not in memory ?
+#define sys_dynlib_dlsym_p 0x19025f
+#define sys_dynlib_dlsym_p2 0x1bea40
 
 /* kernel offsets */
 
@@ -257,28 +259,6 @@
 #define kdlsym_addr_copyinstr_patch2 0xffffffff822d7a6f
 #define kdlsym_addr_copyinstr_patch3 0xffffffff822d7aa0
 
-//kern
-#define vm_map_protect_p 0x39207B
-#define ptrace_p 0x44E625
-#define ptrace_p2 0x44EB11
-#define disable_aslr_p 0x3BF3A4
-#define sceSblACMgrIsAllowedSystemLevelDebugging_p 0x4497F0
-#define kemem_2 0x33B114
-#define kemem_1 0x33B10C
-#define vm_map_lock_offset 0x38CF20
-#define vm_map_insert_offset 0x38E270
-#define vm_map_unlock_offset 0x38CF90
-#define malloc_offset 0x109A60
-#define free_offset 0x109C20
-#define vm_map_lock_read_offset 0x38D070
-#define vm_map_unlock_read_offset 0x38D0C0
-#define vm_map_lookup_entry_offset 0x38D6B0
-#define M_TEMP_offset 0x1532C00
-#define proc_rmem_offset  0x44DC40
-#define vm_map_findspace_offset 0x390130
-#define vm_map_delete_offset 0x38FB70
-#define create_thread_offset 0x182F0
-#define all_proc_offset 022D9B40
 
 #elif FIRMWARE == 1100 // FW 11.00
 
