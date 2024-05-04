@@ -178,15 +178,15 @@
 #define dipsw_libSceDipsw_2 0x008594f2 // .
 #define dipsw_libSceDipsw_3 0x00a080e2 // .
 // debug menu libkernel_sys.prx
-#define sys_debug_menu   0x1D100
-#define sys_debug_menu_1 0x1D460
+#define sys_debug_menu   0x1ce50 // .
+#define sys_debug_menu_1 0x1d1b0 // .
 #endif
 
 // libkernel_sys.srpx 
-#define _scePthreadAttrInit_offset 0x14010 
-#define _scePthreadAttrSetstacksize_offset 0x14030
-#define _scePthreadCreate_offset 0x14450
-#define _thr_initial_offset 0x8E830
+#define _scePthreadAttrInit_offset 0x13e20 // .
+#define _scePthreadAttrSetstacksize_offset 0x13e40 // .
+#define _scePthreadCreate_offset 0x14260 // .
+#define _thr_initial_offset 0x8e830 // .
 
 //kern
 #define vm_map_protect_p 0x0035C710
