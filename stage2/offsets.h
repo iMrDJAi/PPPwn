@@ -7,7 +7,7 @@
 
 #ifndef __OFFSETS_H__
 #define __OFFSETS_H__
-//#define ENABLE_DEBUG_MENU 1
+#define ENABLE_DEBUG_MENU 1
 
 #if FIRMWARE == 900 // FW 9.00
 
@@ -143,8 +143,9 @@
 #define ptrace_p2 0x00384771
 #define disable_aslr_p 0x003B11A4
 #define sceSblACMgrIsAllowedSystemLevelDebugging_p 0x003D0DE0
-#define kemem_2 0x00245EE3
-#define kemem_1 0x00245EDA
+#define kemem_2 0x00245EE4
+#define kemem_1 0x00245EDC
+
 #define vm_map_lock_offset  0x00357760
 #define vm_map_insert_offset 0x00358AB0
 #define vm_map_unlock_offset  0x003577D0
