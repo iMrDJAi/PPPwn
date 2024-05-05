@@ -163,10 +163,11 @@
 
 #if ENABLE_DEBUG_MENU
 // ShellCore offsets
+#if FIRMWARE == 1001
 #define enable_data_mount_patch 0x0031b320 // 1
 #define enable_fpkg_patch 0x003d26bf // 1
 #define fake_free_patch 0x00fb08d9 // 1
-#define pkg_installer_patch 0x009f1600 // 1
+#define pkg_installer_patch 0x009f1601 // 1
 #define ext_hdd_patch 0x0060500d // 1
 
 #define sceKernelIsGenuineCEX 0x0016b6a4
@@ -177,6 +178,23 @@
 #define dipsw_libSceDipsw_1 0x00247e5c
 #define dipsw_libSceDipsw_2 0x008594f2
 #define dipsw_libSceDipsw_3 0x00a080e2
+#else // FIRMWARE == 1000
+#define enable_data_mount_patch 0x0031b310
+#define enable_fpkg_patch 0x003d26af
+#define fake_free_patch 0x00fb08b9
+#define pkg_installer_patch 0x009f15e1
+#define ext_hdd_patch 0x00604ffd
+
+#define sceKernelIsGenuineCEX 0x0016b694
+#define sceKernelIsGenuineCEX_1 0x008594b4
+#define sceKernelIsGenuineCEX_2 0x008a85f2
+#define sceKernelIsGenuineCEX_3 0x00a08094
+#define dipsw_libSceDipsw 0x0016b6c2
+#define dipsw_libSceDipsw_1 0x00247e4c
+#define dipsw_libSceDipsw_2 0x008594e2
+#define dipsw_libSceDipsw_3 0x00a080c2
+#endif
+
 // debug menu libkernel_sys.prx
 #define sys_debug_menu   0x1ce50
 #define sys_debug_menu_1 0x1d1b0
@@ -289,7 +307,7 @@
 #define enable_data_mount_patch 0x31F070// 1
 #define enable_fpkg_patch 0x3D7C9F // 1
 #define fake_free_patch 0x0FC8439 // 1
-#define pkg_installer_patch 0xA06C10 // 1
+#define pkg_installer_patch 0xA06C11 // 1
 #define ext_hdd_patch 0x60E17D // 1
 
 #define sceKernelIsGenuineCEX 0x16B664 //
