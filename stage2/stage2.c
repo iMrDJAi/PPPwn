@@ -108,7 +108,7 @@ struct sce_proc * proc_find_by_name(uint8_t * kbase,
 
 #define USB_LOADER 1
 
-#if FIRMWARE == 1001 // Temporary dirty hack for 10.01
+#if FIRMWARE == 1000 || FIRMWARE == 1001 // Temporary dirty hack for 10.0x
   #define ENABLE_DEBUG_MENU 1
   #define USB_LOADER 0
 #endif
@@ -454,7 +454,7 @@ void stage2(void) {
 
 #else
 
-#if FIRMWARE == 1001 // FW 10.01, 9.00 already has goldhen
+#if FIRMWARE == 1000 || FIRMWARE == 1001 // FW 10.0x, 9.00 already has goldhen
 	// Patch debug setting errors
 	kmem = (uint8_t *)&kbase[0x004ec908];
 	kmem[0] = 0x00;
