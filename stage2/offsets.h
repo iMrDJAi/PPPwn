@@ -166,7 +166,7 @@
 #define enable_data_mount_patch 0x0031b320 // 1
 #define enable_fpkg_patch 0x003d26bf // 1
 #define fake_free_patch 0x00fb08d9 // 1
-#define pkg_installer_patch 0x009f1600 // 1
+#define pkg_installer_patch 0x009f1601 // 1
 #define ext_hdd_patch 0x0060500d // 1
 
 #define sceKernelIsGenuineCEX 0x0016b6a4
@@ -289,7 +289,7 @@
 #define enable_data_mount_patch 0x31F070// 1
 #define enable_fpkg_patch 0x3D7C9F // 1
 #define fake_free_patch 0x0FC8439 // 1
-#define pkg_installer_patch 0xA06C10 // 1
+#define pkg_installer_patch 0xA06C11 // 1
 #define ext_hdd_patch 0x60E17D // 1
 
 #define sceKernelIsGenuineCEX 0x16B664 //
