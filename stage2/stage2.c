@@ -99,7 +99,14 @@ struct sce_proc * proc_find_by_name(uint8_t * kbase,
 
   return NULL;
 }
+
 #define USB_LOADER 1
+
+#if FIRMWARE == 1001 // Temporary dirty hack for 10.01
+  #define ENABLE_DEBUG_MENU 1
+  #define USB_LOADER 0
+#endif
+
 #if USB_LOADER
 static int ksys_read(struct thread * td, int fd, void * buf, size_t nbytes) {
   int( * sys_read)(struct thread * , struct read_args * ) =
@@ -118,6 +125,7 @@ static int ksys_read(struct thread * td, int fd, void * buf, size_t nbytes) {
   return td -> td_retval[0];
 }
 #endif
+
 #if ENABLE_DEBUG_MENU
 int shellui_patch(struct thread * td, uint8_t * kbase) {
   uint8_t * libkernel_sys_base = NULL,
@@ -317,6 +325,7 @@ int shellcore_fpkg_patch(struct thread * td, uint8_t * kbase) {
   return ret;
 }
 #endif
+
 #define SYS_kexec 11
 
 struct sys_kexec_args {
@@ -326,7 +335,6 @@ struct sys_kexec_args {
 
 static int sys_kexec(struct thread * td, struct sys_kexec_args * uap) {
   return uap -> fptr(uap -> arg);
-
 }
 
 void stage2(void) {
@@ -370,6 +378,7 @@ void stage2(void) {
   *(uint16_t * ) kdlsym(copyinstr_patch3) = 0x9090;
 
 #if !ENABLE_DEBUG_MENU
+
   printf("Patching vm_map_protect, ptrace, ASLR and kmem_alloc\n");
 
   // patch vm_map_protect check
@@ -390,7 +399,7 @@ void stage2(void) {
   *(uint8_t * )(kbase + kemem_2) = VM_PROT_ALL;
 
 #if FIRMWARE == 1100 // FW 11.00, only neeeded for 11.00
-  kmem = (uint8_t *)&kbase[0x1E4C33];
+  kmem = (uint8_t *)&kbase[0x1E4C33]; // Move to offsets.h?
   kmem[0] = 0x90;
   kmem[1] = 0x90;
   kmem[2] = 0x90;
@@ -436,7 +445,23 @@ void stage2(void) {
 	kmem[2] = 0xEB;
 	kmem[3] = 0x01;
 #endif
+
 #else
+
+#if FIRMWARE == 1001 // FW 10.01, 9.00 already has goldhen
+	// Patch debug setting errors
+	kmem = (uint8_t *)&kbase[0x004ec908];
+	kmem[0] = 0x00;
+	kmem[1] = 0x00;
+	kmem[2] = 0x00;
+	kmem[3] = 0x00;
+
+	kmem = (uint8_t *)&kbase[0x004ed9ce];
+	kmem[0] = 0x00;
+	kmem[1] = 0x00;
+	kmem[2] = 0x00;
+	kmem[3] = 0x00;
+#endif
 #if FIRMWARE == 1100 // FW 11.00, 9.00 already has goldhen
 	// Patch debug setting errors
 	kmem = (uint8_t *)&kbase[0x004EE328];
@@ -451,6 +476,7 @@ void stage2(void) {
 	kmem[2] = 0x00;
 	kmem[3] = 0x00;
 #endif
+
 #endif
 
   // Install kexec syscall 11
@@ -508,10 +534,10 @@ void stage2(void) {
 return 0;
 #endif
 
-  #if USB_LOADER
- void* buffer = NULL;
- void (*free)(void * ptr, int type) = (void *)(kbase + free_offset);
- void* M_TEMP = (void *)(kbase + M_TEMP_offset);
+#if USB_LOADER
+  void* buffer = NULL;
+  void (*free)(void * ptr, int type) = (void *)(kbase + free_offset);
+  void* M_TEMP = (void *)(kbase + M_TEMP_offset);
   void * ( * malloc)(unsigned long size, void * type, int flags) = (void * )(kbase + malloc_offset);
   fd = ksys_open(td, "/mnt/usb0/payload.bin", O_RDONLY, 0);
   if (fd < 0)
@@ -569,7 +595,7 @@ return 0;
   printf("Writing payload...\n");
   // write the payload
   #if USB_LOADER
- // r = proc_write_mem(td, kbase, p, (void * ) PAYLOAD_BASE, buffer, payload_size, NULL);
+  // r = proc_write_mem(td, kbase, p, (void * ) PAYLOAD_BASE, buffer, payload_size, NULL);
   struct iovec iov;
     struct uio uio;
     
