@@ -27,6 +27,8 @@ The exploit only prints `PPPwned` on your PS4 as a proof-of-concept. In order to
 - has code for loading payloads from a USB (WIP)
 - Big thanks to ps4debug for the utils
 
+**Note:** Before you compile, copy `payload/payload.bin` to `stage2/` folder.
+
 ## Usage
 
 On your computer, clone the repository:
