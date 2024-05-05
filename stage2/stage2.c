@@ -15,6 +15,12 @@ extern int32_t payloadbin_size;
 
 struct sysent *sysents;
 
+size_t strlen(const char * s) {
+  const char * t = s;
+  while (* t)
+    t++;
+  return t - s;
+}
 
 int memcmp(const void * str1,
   const void * str2, size_t count) {
