@@ -28,7 +28,7 @@
 #define PS4_PAGE_SIZE 0x4000
 #define ROUND_PG(x) (((x) + (PS4_PAGE_SIZE - 1)) & ~(PS4_PAGE_SIZE - 1))
 
-#define PAYLOAD_NAME "MiraLoader_Orbis_MIRA_PLATFORM_ORBIS_BSD_1001.bin"
+#define PAYLOAD_NAME "payload.bin"
 #define PAYLOAD_EXT_PATH "/mnt/usb0/" PAYLOAD_NAME
 #define PAYLOAD_INT_PATH "/data/MIRA/payloads/" PAYLOAD_NAME
 
