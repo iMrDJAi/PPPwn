@@ -28,9 +28,9 @@
 #define PS4_PAGE_SIZE 0x4000
 #define ROUND_PG(x) (((x) + (PS4_PAGE_SIZE - 1)) & ~(PS4_PAGE_SIZE - 1))
 
-#define PAYLOAD_NAME "goldhen.bin"
+#define PAYLOAD_NAME "MiraLoader_Orbis_MIRA_PLATFORM_ORBIS_BSD_1001.bin"
 #define PAYLOAD_EXT_PATH "/mnt/usb0/" PAYLOAD_NAME
-#define PAYLOAD_INT_PATH "/data/GoldHEN/payloads/" PAYLOAD_NAME
+#define PAYLOAD_INT_PATH "/data/MIRA/payloads/" PAYLOAD_NAME
 
 // by OSM-Made
 typedef struct {
@@ -413,7 +413,7 @@ void stage2(void) {
   load_cr0(cr0);
 
   // Send notification
-  notify("PPPwned");
+  notify("PPPwned ;)");
 
   // Inject payload
   struct thread *td = curthread;
